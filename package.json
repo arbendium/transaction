@@ -1,0 +1,24 @@
+{
+  "type": "module",
+  "name": "@arbendium/transaction",
+  "version": "0.0.0",
+  "description": "A generic transaction implementation",
+  "author": "Keijo Kapp <keijo.kapp@gmail.com>",
+  "license": "ISC",
+  "exports": {
+    ".": "./lib/transaction.js"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "lint": "eslint lib"
+  },
+  "dependencies": {
+    "@arbendium/tree": "github:arbendium/tree"
+  },
+  "devDependencies": {
+    "@arbendium/eslint-config-base": "^0.2.1",
+    "eslint": "^8.50.0"
+  }
+}
