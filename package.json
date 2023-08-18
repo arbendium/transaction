@@ -1,0 +1,22 @@
+{
+  "name": "@arbendium/transaction",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "An abstract transaction implementation",
+  "author": "Keijo Kapp <keijo.kapp@gmail.com>",
+  "license": "ISC",
+  "exports": {
+    ".": "./lib/transaction.js"
+  },
+  "files": ["lib"],
+  "scripts": {
+    "lint": "eslint lib"
+  },
+  "dependencies": {
+    "@arbendium/tree": "github:arbendium/tree"
+  },
+  "devDependencies": {
+    "eslint": "^8.50.0",
+    "eslint-config-airbnb-base": "^15.0.0"
+  }
+}
