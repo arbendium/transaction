@@ -1,0 +1,23 @@
+{
+  "type": "module",
+  "name": "virtual-transaction",
+  "version": "0.0.0",
+  "description": "A generic transaction implementation",
+  "author": "Keijo Kapp <keijo.kapp@gmail.com>",
+  "license": "ISC",
+  "exports": "./lib/transaction.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "lint": "eslint lib, eslint.config.json"
+  },
+  "dependencies": {
+    "@arbendium/tree": "github:arbendium/tree"
+  },
+  "devDependencies": {
+    "@arbendium/eslint-config-base": "^1.0.0",
+    "@types/node": "^20.16.9",
+    "eslint": "^8.57.1"
+  }
+}
