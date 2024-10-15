@@ -69,6 +69,10 @@ function genericTest(state, key, expectResult) {
 
 		if (expectResults != null) {
 			for (const [offset, value] of Object.entries(expectResults)) {
+				// if (+offset !== 2) {
+				// 	continue;
+				// }
+
 				test(`inclusive:${inclusive} offset:${offset}`, () => {
 					const index = createIndex(state);
 
@@ -100,6 +104,10 @@ function genericTest(state, key, expectResult) {
  */
 function matrixTest(key, expectResults) {
 	for (const [state, expectResult] of Object.entries(expectResults)) {
+		// if (state !== 'TUFU') {
+		// 	continue;
+		// }
+
 		assert.strictEqual(state.length, 4);
 		assert('UTF'.includes(state[0]));
 		assert('MUTF'.includes(state[1]));
@@ -486,8 +494,8 @@ suite('matrix:', () => {
 					undefined,
 					undefined,
 					[],
-					{ key: [0], inclusive: true, offset: 1 },
-					{ key: [0], inclusive: true, offset: 2 }
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			UTUM: {
@@ -678,8 +686,8 @@ suite('matrix:', () => {
 					undefined,
 					undefined,
 					[],
-					{ key: [0], inclusive: true, offset: 1 },
-					{ key: [0], inclusive: true, offset: 2 }
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			UTMU: {
@@ -870,8 +878,8 @@ suite('matrix:', () => {
 					undefined,
 					undefined,
 					[],
-					{ key: [0], inclusive: true, offset: 1 },
-					{ key: [0], inclusive: true, offset: 2 }
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			UTUU: {
@@ -966,8 +974,8 @@ suite('matrix:', () => {
 					undefined,
 					undefined,
 					[],
-					{ key: [1], inclusive: true, offset: 1 },
-					{ key: [1], inclusive: true, offset: 2 }
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			UUFU: {
@@ -1011,13 +1019,13 @@ suite('matrix:', () => {
 					{ key: [], inclusive: true, offset: 1 }
 				],
 				true: [
-					// undefined,
-					// undefined,
-					// [],
-					// { key: [], inclusive: true, offset: 1 },
-					// { key: [], inclusive: true, offset: 2 }
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
 				]
-			},
+			}
 		}
 	);
 });
