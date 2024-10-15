@@ -1318,7 +1318,7 @@ suite('matrix:', () => {
 	);
 });
 
-suite.skip('matrix:0', () => {
+suite('matrix:0', () => {
 	matrixTest(
 		[0],
 		{
