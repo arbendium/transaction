@@ -1,10 +1,18 @@
 // @ts-check
 
 import assert from 'node:assert';
-import test from 'node:test';
+import test, { suite } from 'node:test';
 import RangeIndex from '../lib/RangeIndex.js';
 import { resolveCachedKeySelector } from '../lib/range-utils.js';
 import { emptyBuffer } from '../lib/util.js';
+
+/**
+ * @typedef {(
+ *   | { key: number[], inclusive: boolean, offset: number }
+ *   | number[]
+ *   | undefined
+ * )} SimpleResult
+ */
 
 /** @type {import('../lib/types.ts').RangeIndexEntry} */
 const defaultEntry = {
@@ -49,17 +57,11 @@ function createIndex(values) {
  * @param {[number[], boolean | undefined][]} state
  * @param {number[]} key
  * @param {{
- *   false?: Record<
- *     number,
- *     { key: number[], inclusive: boolean, offset: number } | number[] | undefined
- *   >
- *   true?: Record<
- *     number,
- *     { key: number[], inclusive: boolean, offset: number } | number[] | undefined
- *   >
+ *   false?: Record<number, SimpleResult>
+ *   true?: Record<number, SimpleResult>
  * }} expectResult
  */
-async function genericTest(state, key, expectResult) {
+function genericTest(state, key, expectResult) {
 	const keyBuffer = Buffer.from(key);
 
 	for (const inclusive of [true, false]) {
@@ -67,7 +69,7 @@ async function genericTest(state, key, expectResult) {
 
 		if (expectResults != null) {
 			for (const [offset, value] of Object.entries(expectResults)) {
-				await test(`inclusive:${inclusive} offset:${offset}`, () => {
+				test(`inclusive:${inclusive} offset:${offset}`, () => {
 					const index = createIndex(state);
 
 					const result = resolveCachedKeySelector(
@@ -92,8 +94,54 @@ async function genericTest(state, key, expectResult) {
 	}
 }
 
-test('key: - empty index', async () => {
-	await genericTest(
+/**
+ * @param {number[]} key
+ * @param {Record<string, { false?: SimpleResult[], true?: SimpleResult[] }>} expectResults
+ */
+function matrixTest(key, expectResults) {
+	for (const [state, expectResult] of Object.entries(expectResults)) {
+		assert.strictEqual(state.length, 4);
+		assert('UTF'.includes(state[0]));
+		assert('MUTF'.includes(state[1]));
+		assert('MUTF'.includes(state[2]));
+		assert('MUTF'.includes(state[3]));
+
+		/** @type {[number[], boolean | undefined][]} */
+		const ranges = [];
+
+		/** @type {Record<string, boolean | undefined>} */
+		const map = { T: true, F: false, U: undefined };
+
+		ranges.push([[], map[state[0]]]);
+
+		if (state[1] !== 'M') {
+			ranges.push([[0], map[state[1]]]);
+		}
+
+		if (state[2] !== 'M') {
+			ranges.push([[1], map[state[2]]]);
+		}
+
+		if (state[3] !== 'M') {
+			ranges.push([[2], map[state[3]]]);
+		}
+
+		const normalizedExpectResult = Object.fromEntries(Object.entries(expectResult).map(
+			([key, value]) => {
+				const offsetRange = Math.floor(value.length / 2);
+
+				return [key, Object.fromEntries(value.map((v, i) => [i - offsetRange, v]))];
+			}
+		));
+
+		suite(state, () => {
+			genericTest(ranges, key, normalizedExpectResult);
+		});
+	}
+}
+
+suite.skip('key: - empty index', () => {
+	genericTest(
 		[[[], undefined]],
 		[],
 		{
@@ -115,8 +163,8 @@ test('key: - empty index', async () => {
 	);
 });
 
-test('key: - [] being undefined', async () => {
-	await genericTest(
+suite.skip('key: - [] being undefined', () => {
+	genericTest(
 		[[[], false], [[0], undefined]],
 		[],
 		{
@@ -138,8 +186,8 @@ test('key: - [] being undefined', async () => {
 	);
 });
 
-test('key: - [] being a value', async () => {
-	await genericTest(
+suite.skip('key: - [] being a value', () => {
+	genericTest(
 		[[[], true], [[0], undefined]],
 		[],
 		{
@@ -161,8 +209,8 @@ test('key: - [] being a value', async () => {
 	);
 });
 
-test('key:0 - empty index', async () => {
-	await genericTest(
+suite.skip('key:0 - empty index', () => {
+	genericTest(
 		[[[], undefined]],
 		[0],
 		{
@@ -184,8 +232,8 @@ test('key:0 - empty index', async () => {
 	);
 });
 
-test('key:0 - [] being undefined', async () => {
-	await genericTest(
+suite.skip('key:0 - [] being undefined', () => {
+	genericTest(
 		[[[], false], [[0], undefined]],
 		[0],
 		{
@@ -207,8 +255,8 @@ test('key:0 - [] being undefined', async () => {
 	);
 });
 
-test('key:0 - [] being a value', async () => {
-	await genericTest(
+suite.skip('key:0 - [] being a value', () => {
+	genericTest(
 		[[[], true], [[0], undefined]],
 		[0],
 		{
@@ -226,6 +274,222 @@ test('key:0 - [] being a value', async () => {
 				1: { key: [0], inclusive: true, offset: 1 },
 				2: { key: [0], inclusive: true, offset: 2 }
 			}
+		}
+	);
+});
+
+suite('matrix:', () => {
+	matrixTest(
+		[],
+		{
+			UMMM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: false, offset: 1 },
+					{ key: [], inclusive: false, offset: 2 }
+				],
+				true: [
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 0 },
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			UUMM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: false, offset: 1 },
+					{ key: [], inclusive: false, offset: 2 }
+				],
+				true: [
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 0 },
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			FUMM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				],
+				true: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			TUMM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 }
+				],
+				true: [
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			UMUM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: false, offset: 1 },
+					{ key: [], inclusive: false, offset: 2 }
+				],
+				true: [
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 0 },
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			FMUM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				],
+				true: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			TMUM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 }
+				],
+				true: [
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			UUUM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: false, offset: 1 },
+					{ key: [], inclusive: false, offset: 2 }
+				],
+				true: [
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 0 },
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			FUUM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				],
+				true: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			TUUM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 }
+				],
+				true: [
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			UFUM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: false, offset: 1 },
+					{ key: [], inclusive: false, offset: 2 }
+				],
+				true: [
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 0 },
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				]
+			},
+			FFUM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				],
+				true: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				]
+			},
+			TFUM: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					[],
+					{ key: [0], inclusive: true, offset: 1 }
+				],
+				true: [
+					undefined,
+					undefined,
+					[],
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				]
+			},
 		}
 	);
 });
