@@ -1728,7 +1728,7 @@ suite('matrix:0', () => {
 					// { key: [0], inclusive: false, offset: -1 },
 					// { key: [0], inclusive: false, offset: 0 },
 					// [0],
-					// { key: [0], inclusive: true, offset: 1 }
+					// { key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
 					// undefined,
