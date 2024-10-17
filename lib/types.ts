@@ -1,17 +1,16 @@
-export type Value = Buffer
-export type MutationOperator = 'set'
+\export type MutationOperator = 'set'
 export type Mutation = [MutationOperator, Buffer] | 'clear'
 export type KeySelector = { key: Buffer, inclusive: boolean, offset: number }
 export type RangeIndexEntry = {
 	mutations: Mutation[] | undefined
-	promise: Promise<Value> | undefined
+	promise: Promise<Buffer | undefined> | undefined
 	readConflict: boolean
-	value?: Value | undefined
+	value?: Buffer | undefined | undefined
 	writeConflict: boolean
 }
 export type RangeIndexAction =
-	| ['setPromise', Promise<Value>]
-	| ['setValue', Value]
+	| ['setPromise', Promise<Buffer | undefined>]
+	| ['setValue', Buffer | undefined]
 	| 'setReadConflict'
 	| 'setWriteConflict'
 	| ['addMutation', Mutation]
