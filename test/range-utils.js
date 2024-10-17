@@ -69,10 +69,6 @@ function genericTest(state, key, expectResult) {
 
 		if (expectResults != null) {
 			for (const [offset, value] of Object.entries(expectResults)) {
-				// if (offset !== '1') {
-				// 	continue;
-				// }
-
 				test(`inclusive:${inclusive} offset:${offset}`, () => {
 					const index = createIndex(state);
 
@@ -104,10 +100,6 @@ function genericTest(state, key, expectResult) {
  */
 function matrixTest(key, expectResults) {
 	for (const [state, expectResult] of Object.entries(expectResults)) {
-		// if (state !== 'UTMU') {
-		// 	continue;
-		// }
-
 		assert.strictEqual(state.length, 4);
 		assert('UTF'.includes(state[0]));
 		assert('MUTF'.includes(state[1]));
@@ -2924,102 +2916,102 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
-			// UFTU: {
-			// 	false: [
-			// 		{ key: [0], inclusive: false, offset: -2 },
-			// 		{ key: [0], inclusive: false, offset: -1 },
-			// 		{ key: [0], inclusive: false, offset: 0 },
-			// 		[1],
-			// 		{ key: [1], inclusive: true, offset: 1 }
-			// 	],
-			// 	true: [
-			// 		{ key: [0], inclusive: true, offset: -2 },
-			// 		{ key: [0], inclusive: true, offset: -1 },
-			// 		{ key: [0], inclusive: true, offset: 0 },
-			// 		{ key: [0], inclusive: true, offset: 1 },
-			// 		{ key: [0], inclusive: true, offset: 2 }
-			// 	]
-			// },
-			// FFTU: {
-			// 	false: [
-			// 		undefined,
-			// 		undefined,
-			// 		undefined,
-			// 		[1],
-			// 		{ key: [1], inclusive: true, offset: 1 }
-			// 	],
-			// 	true: [
-			// 		undefined,
-			// 		undefined,
-			// 		undefined,
-			// 		[1],
-			// 		{ key: [1], inclusive: true, offset: 1 }
-			// 	]
-			// },
-			// TFTU: {
-			// 	false: [
-			// 		undefined,
-			// 		undefined,
-			// 		[],
-			// 		[1],
-			// 		{ key: [1], inclusive: true, offset: 1 }
-			// 	],
-			// 	true: [
-			// 		undefined,
-			// 		undefined,
-			// 		[],
-			// 		[1],
-			// 		{ key: [1], inclusive: true, offset: 1 }
-			// 	]
-			// },
-			// UTTU: {
-			// 	false: [
-			// 		{ key: [0], inclusive: false, offset: -2 },
-			// 		{ key: [0], inclusive: false, offset: -1 },
-			// 		{ key: [0], inclusive: false, offset: 0 },
-			// 		[0],
-			// 		[1]
-			// 	],
-			// 	true: [
-			// 		{ key: [0], inclusive: true, offset: -2 },
-			// 		{ key: [0], inclusive: true, offset: -1 },
-			// 		[0],
-			// 		[1],
-			// 		{ key: [1], inclusive: true, offset: 1 }
-			// 	]
-			// },
-			// FTTU: {
-			// 	false: [
-			// 		undefined,
-			// 		undefined,
-			// 		undefined,
-			// 		[0],
-			// 		[1]
-			// 	],
-			// 	true: [
-			// 		undefined,
-			// 		undefined,
-			// 		[0],
-			// 		[1],
-			// 		{ key: [1], inclusive: true, offset: 1 }
-			// 	]
-			// },
-			// TTTU: {
-			// 	false: [
-			// 		undefined,
-			// 		undefined,
-			// 		[],
-			// 		[0],
-			// 		[1]
-			// 	],
-			// 	true: [
-			// 		undefined,
-			// 		[],
-			// 		[0],
-			// 		[1],
-			// 		{ key: [1], inclusive: true, offset: 1 }
-			// 	]
-			// }
+			UFTU: {
+				false: [
+					{ key: [1], inclusive: false, offset: -2 },
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
+					[1],
+					{ key: [1], inclusive: true, offset: 1 }
+				],
+				true: [
+					{ key: [1], inclusive: true, offset: -2 },
+					{ key: [1], inclusive: true, offset: -1 },
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				]
+			},
+			FFTU: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					[1],
+					{ key: [1], inclusive: true, offset: 1 }
+				],
+				true: [
+					undefined,
+					undefined,
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				]
+			},
+			TFTU: {
+				false: [
+					undefined,
+					undefined,
+					[],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 }
+				],
+				true: [
+					undefined,
+					[],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				]
+			},
+			UTTU: {
+				false: [
+					{ key: [0], inclusive: true, offset: -2 },
+					{ key: [0], inclusive: true, offset: -1 },
+					[0],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 }
+				],
+				true: [
+					{ key: [0], inclusive: true, offset: -1 },
+					[0],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				]
+			},
+			FTTU: {
+				false: [
+					undefined,
+					undefined,
+					[0],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 }
+				],
+				true: [
+					undefined,
+					[0],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				]
+			},
+			TTTU: {
+				false: [
+					undefined,
+					[],
+					[0],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 }
+				],
+				true: [
+					[],
+					[0],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				]
+			}
 		}
 	);
 });
