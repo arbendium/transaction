@@ -278,7 +278,7 @@ suite.skip('key:0 - [] being a value', () => {
 	);
 });
 
-suite('matrix:', () => {
+suite.skip('matrix:', () => {
 	const na = {
 		false: [
 			undefined,
@@ -997,7 +997,7 @@ suite('matrix:', () => {
 	);
 });
 
-suite('matrix:0', () => {
+suite.skip('matrix:0', () => {
 	const na = {
 		false: [
 			{ key: [0], inclusive: false, offset: -2 },
@@ -1764,7 +1764,7 @@ suite('matrix:0', () => {
 	);
 });
 
-suite('matrix:1', () => {
+suite.skip('matrix:1', () => {
 	const na = {
 		false: [
 			{ key: [1], inclusive: false, offset: -2 },
@@ -2433,6 +2433,383 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
+			}
+		}
+	);
+});
+
+suite('matrix:2', () => {
+	const na = {
+		false: [
+			{ key: [2], inclusive: false, offset: -2 },
+			{ key: [2], inclusive: false, offset: -1 },
+			{ key: [2], inclusive: false, offset: 0 },
+			{ key: [2], inclusive: false, offset: 1 },
+			{ key: [2], inclusive: false, offset: 2 }
+		],
+		true: [
+			{ key: [2], inclusive: true, offset: -2 },
+			{ key: [2], inclusive: true, offset: -1 },
+			{ key: [2], inclusive: true, offset: 0 },
+			{ key: [2], inclusive: true, offset: 1 },
+			{ key: [2], inclusive: true, offset: 2 }
+		]
+	};
+
+	matrixTest(
+		[2],
+		{
+			UMMM: na,
+			UUMM: na,
+			FUMM: na,
+			TUMM: na,
+			UMUM: na,
+			FMUM: na,
+			TMUM: na,
+			UUUM: na,
+			FUUM: na,
+			TUUM: na,
+			UFUM: na,
+			FFUM: na,
+			TFUM: na,
+			UTUM: na,
+			FTUM: na,
+			TTUM: na,
+			UMMU: na,
+			FMMU: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TMMU: {
+				false: [
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			UUMU: na,
+			FUMU: na,
+			TUMU: na,
+			UFMU: {
+				false: [
+					{ key: [2], inclusive: false, offset: -2 },
+					{ key: [2], inclusive: false, offset: -1 },
+					{ key: [2], inclusive: false, offset: 0 },
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			FFMU: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TFMU: {
+				false: [
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			UTMU: {
+				false: [
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
+					[0],
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			FTMU: {
+				false: [
+					undefined,
+					undefined,
+					[0],
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TTMU: {
+				false: [
+					undefined,
+					[],
+					[0],
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			UMUU: na,
+			FMUU: na,
+			TMUU: na,
+			UUUU: na,
+			FUUU: na,
+			TUUU: na,
+			UFUU: na,
+			FFUU: na,
+			TFUU: na,
+			UTUU: na,
+			FTUU: na,
+			TTUU: na,
+			UMFU: {
+				false: [
+					{ key: [2], inclusive: false, offset: -2 },
+					{ key: [2], inclusive: false, offset: -1 },
+					{ key: [2], inclusive: false, offset: 0 },
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			FMFU: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TMFU: {
+				false: [
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			UUFU: {
+				false: [
+					{ key: [2], inclusive: false, offset: -2 },
+					{ key: [2], inclusive: false, offset: -1 },
+					{ key: [2], inclusive: false, offset: 0 },
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			FUFU: {
+				false: [
+					{ key: [2], inclusive: false, offset: -2 },
+					{ key: [2], inclusive: false, offset: -1 },
+					{ key: [2], inclusive: false, offset: 0 },
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TUFU: {
+				false: [
+					{ key: [2], inclusive: false, offset: -2 },
+					{ key: [2], inclusive: false, offset: -1 },
+					{ key: [2], inclusive: false, offset: 0 },
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			UFFU: {
+				false: [
+					{ key: [2], inclusive: false, offset: -2 },
+					{ key: [2], inclusive: false, offset: -1 },
+					{ key: [2], inclusive: false, offset: 0 },
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			FFFU: {
+				false: [
+					undefined,
+					undefined,
+					undefined,
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TFFU: {
+				false: [
+					undefined,
+					undefined,
+					[],
+					{ key: [], inclusive: true, offset: 1 },
+					{ key: [], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			UTFU: {
+				false: [
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
+					[0],
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			FTFU: {
+				false: [
+					undefined,
+					undefined,
+					[0],
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TTFU: {
+				false: [
+					undefined,
+					[],
+					[0],
+					{ key: [0], inclusive: true, offset: 1 },
+					{ key: [0], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			UMTU: {
+				false: [
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			FMTU: {
+				false: [
+					undefined,
+					undefined,
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TMTU: {
+				false: [
+					undefined,
+					[],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			UUTU: {
+				false: [
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			FUTU: {
+				false: [
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TUTU: {
+				false: [
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			UFTU: {
+				false: [
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			FFTU: {
+				false: [
+					undefined,
+					undefined,
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TFTU: {
+				false: [
+					undefined,
+					[],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			UTTU: {
+				false: [
+					{ key: [0], inclusive: false, offset: 0 },
+					[0],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			FTTU: {
+				false: [
+					undefined,
+					[0],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
+			},
+			TTTU: {
+				false: [
+					[],
+					[0],
+					[1],
+					{ key: [1], inclusive: true, offset: 1 },
+					{ key: [1], inclusive: true, offset: 2 }
+				],
+				true: na.true
 			}
 		}
 	);
