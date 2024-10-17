@@ -1531,8 +1531,8 @@ suite('matrix:0', () => {
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
@@ -1723,8 +1723,8 @@ suite('matrix:0', () => {
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
@@ -1915,8 +1915,8 @@ suite('matrix:0', () => {
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
@@ -2107,8 +2107,8 @@ suite('matrix:0', () => {
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
@@ -2299,8 +2299,8 @@ suite('matrix:0', () => {
 					[1]
 				],
 				true: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					[1],
 					{ key: [1], inclusive: true, offset: 1 }
@@ -2423,8 +2423,8 @@ suite('matrix:1', () => {
 			},
 			UTUM: {
 				false: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
@@ -2522,15 +2522,15 @@ suite('matrix:1', () => {
 			},
 			UTMU: {
 				false: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
@@ -2624,8 +2624,8 @@ suite('matrix:1', () => {
 			},
 			UTUU: {
 				false: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
@@ -2774,15 +2774,15 @@ suite('matrix:1', () => {
 			},
 			UTFU: {
 				false: [
-					{ key: [0], inclusive: true, offset: -2 }, // TODO: should be false:-1 ?
-					{ key: [0], inclusive: true, offset: -1 }, // TODO: should be false:0 ?
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
@@ -2829,8 +2829,8 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					{ key: [1], inclusive: true, offset: -2 },
-					{ key: [1], inclusive: true, offset: -1 },
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
 					[1],
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
@@ -2877,8 +2877,8 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					{ key: [1], inclusive: true, offset: -2 },
-					{ key: [1], inclusive: true, offset: -1 },
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
 					[1],
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
@@ -2893,8 +2893,8 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					{ key: [1], inclusive: true, offset: -2 },
-					{ key: [1], inclusive: true, offset: -1 },
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
 					[1],
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
@@ -2909,8 +2909,8 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					{ key: [1], inclusive: true, offset: -2 },
-					{ key: [1], inclusive: true, offset: -1 },
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
 					[1],
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
@@ -2925,8 +2925,8 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					{ key: [1], inclusive: true, offset: -2 },
-					{ key: [1], inclusive: true, offset: -1 },
+					{ key: [1], inclusive: false, offset: -1 },
+					{ key: [1], inclusive: false, offset: 0 },
 					[1],
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
@@ -2966,14 +2966,14 @@ suite('matrix:1', () => {
 			},
 			UTTU: {
 				false: [
-					{ key: [0], inclusive: true, offset: -2 },
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					[1],
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					{ key: [0], inclusive: true, offset: -1 },
+					{ key: [0], inclusive: false, offset: 0 },
 					[0],
 					[1],
 					{ key: [1], inclusive: true, offset: 1 },
