@@ -10,7 +10,7 @@
     "lib"
   ],
   "scripts": {
-    "lint": "eslint lib, eslint.config.json"
+    "lint": "eslint lib test eslint.config.js"
   },
   "dependencies": {
     "@arbendium/tree": "github:arbendium/tree"

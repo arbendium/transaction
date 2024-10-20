@@ -73,9 +73,11 @@ function genericTest(state, key, expectResult) {
 					const index = createIndex(state);
 
 					const result = resolveCachedKeySelector(
-						keyBuffer,
-						inclusive,
-						+offset,
+						{
+							key: keyBuffer,
+							inclusive,
+							offset: +offset
+						},
 						index
 					);
 
@@ -140,145 +142,7 @@ function matrixTest(key, expectResults) {
 	}
 }
 
-suite.skip('key: - empty index', () => {
-	genericTest(
-		[[[], undefined]],
-		[],
-		{
-			false: {
-				'-2': undefined,
-				'-1': undefined,
-				0: undefined,
-				1: { key: [], inclusive: false, offset: 1 },
-				2: { key: [], inclusive: false, offset: 2 }
-			},
-			true: {
-				'-2': undefined,
-				'-1': undefined,
-				0: { key: [], inclusive: true, offset: 0 },
-				1: { key: [], inclusive: true, offset: 1 },
-				2: { key: [], inclusive: true, offset: 2 }
-			}
-		}
-	);
-});
-
-suite.skip('key: - [] being undefined', () => {
-	genericTest(
-		[[[], false], [[0], undefined]],
-		[],
-		{
-			false: {
-				'-2': undefined,
-				'-1': undefined,
-				0: undefined,
-				1: { key: [], inclusive: true, offset: 1 },
-				2: { key: [], inclusive: true, offset: 2 }
-			},
-			true: {
-				'-2': undefined,
-				'-1': undefined,
-				0: undefined,
-				1: { key: [], inclusive: true, offset: 1 },
-				2: { key: [], inclusive: true, offset: 2 }
-			}
-		}
-	);
-});
-
-suite.skip('key: - [] being a value', () => {
-	genericTest(
-		[[[], true], [[0], undefined]],
-		[],
-		{
-			false: {
-				'-2': undefined,
-				'-1': undefined,
-				0: undefined,
-				1: [],
-				2: { key: [], inclusive: true, offset: 1 }
-			},
-			true: {
-				'-2': undefined,
-				'-1': undefined,
-				0: [],
-				1: { key: [], inclusive: true, offset: 1 },
-				2: { key: [], inclusive: true, offset: 2 }
-			}
-		}
-	);
-});
-
-suite.skip('key:0 - empty index', () => {
-	genericTest(
-		[[[], undefined]],
-		[0],
-		{
-			false: {
-				'-2': { key: [0], inclusive: false, offset: -2 },
-				'-1': { key: [0], inclusive: false, offset: -1 },
-				0: { key: [0], inclusive: false, offset: 0 },
-				1: { key: [0], inclusive: false, offset: 1 },
-				2: { key: [0], inclusive: false, offset: 2 }
-			},
-			true: {
-				'-2': { key: [0], inclusive: true, offset: -2 },
-				'-1': { key: [0], inclusive: true, offset: -1 },
-				0: { key: [0], inclusive: true, offset: 0 },
-				1: { key: [0], inclusive: true, offset: 1 },
-				2: { key: [0], inclusive: true, offset: 2 }
-			}
-		}
-	);
-});
-
-suite.skip('key:0 - [] being undefined', () => {
-	genericTest(
-		[[[], false], [[0], undefined]],
-		[0],
-		{
-			false: {
-				'-2': undefined,
-				'-1': undefined,
-				0: undefined,
-				1: { key: [], inclusive: true, offset: 1 },
-				2: { key: [], inclusive: true, offset: 2 }
-			},
-			true: {
-				'-2': { key: [0], inclusive: true, offset: -2 },
-				'-1': { key: [0], inclusive: true, offset: -1 },
-				0: { key: [0], inclusive: true, offset: 0 },
-				1: { key: [0], inclusive: true, offset: 1 },
-				2: { key: [0], inclusive: true, offset: 2 }
-			}
-		}
-	);
-});
-
-suite.skip('key:0 - [] being a value', () => {
-	genericTest(
-		[[[], true], [[0], undefined]],
-		[0],
-		{
-			false: {
-				'-2': undefined,
-				'-1': undefined,
-				0: [],
-				1: { key: [], inclusive: true, offset: 1 },
-				2: { key: [], inclusive: true, offset: 2 }
-			},
-			true: {
-				'-2': { key: [0], inclusive: true, offset: -2 },
-				'-1': { key: [0], inclusive: true, offset: -1 },
-				0: { key: [0], inclusive: true, offset: 0 },
-				1: { key: [0], inclusive: true, offset: 1 },
-				2: { key: [0], inclusive: true, offset: 2 }
-			}
-		}
-	);
-});
-
-suite.skip('matrix:', () => {
+suite('matrix:', () => {
 	const na = {
 		false: [
 			undefined,
@@ -997,7 +861,7 @@ suite.skip('matrix:', () => {
 	);
 });
 
-suite.skip('matrix:0', () => {
+suite('matrix:0', () => {
 	const na = {
 		false: [
 			{ key: [0], inclusive: false, offset: -2 },
@@ -1764,7 +1628,7 @@ suite.skip('matrix:0', () => {
 	);
 });
 
-suite.skip('matrix:1', () => {
+suite('matrix:1', () => {
 	const na = {
 		false: [
 			{ key: [1], inclusive: false, offset: -2 },
