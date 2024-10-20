@@ -3,7 +3,7 @@
 import assert from 'node:assert';
 import test, { suite } from 'node:test';
 import RangeIndex from '../lib/RangeIndex.js';
-import { resolveCachedKeySelector } from '../lib/range-utils.js';
+import resolveCachedKeySelector from '../lib/resolveCachedKeySelector.js';
 import { emptyBuffer } from '../lib/util.js';
 
 /**
@@ -14,7 +14,7 @@ import { emptyBuffer } from '../lib/util.js';
  * )} SimpleResult
  */
 
-/** @type {import('../lib/types.ts').RangeIndexEntry} */
+/** @type {import('../lib/types.js').RangeIndexEntry} */
 const defaultEntry = {
 	mutations: undefined,
 	promise: undefined,
@@ -25,14 +25,14 @@ const defaultEntry = {
 /**
  * @param {[number[], boolean | undefined][]} values
  * @returns {RangeIndex<
- *   import('../lib/types.ts').RangeIndexEntry,
- *   import('../lib/types.ts').RangeIndexEntry
+ *   import('../lib/types.js').RangeIndexEntry,
+ *   import('../lib/types.js').RangeIndexEntry
  * >}
  */
 function createIndex(values) {
 	/**
 	 * @type {RangeIndex<
-	 *   import('../lib/types.ts').RangeIndexEntry,
+	 *   import('../lib/types.js').RangeIndexEntry,
 	 *   any
 	 * >}
 	 */
