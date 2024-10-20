@@ -9,7 +9,7 @@ import { emptyBuffer } from '../lib/util.js';
 /**
  * @typedef {(
  *   | { key: number[], inclusive: boolean, offset: number }
- *   | number[]
+ *   | number
  *   | undefined
  * )} SimpleResult
  */
@@ -83,12 +83,9 @@ function genericTest(state, key, expectResult) {
 
 					assert.deepStrictEqual(
 						result,
-						// eslint-disable-next-line no-nested-ternary
-						Array.isArray(value)
-							? Buffer.from(value)
-							: value != null
-								? { key: Buffer.from(value.key), inclusive: value.inclusive, offset: value.offset }
-								: value
+						typeof value === 'number' || value == null
+							? value
+							: { key: Buffer.from(value.key), inclusive: value.inclusive, offset: value.offset }
 					);
 				});
 			}
@@ -98,10 +95,11 @@ function genericTest(state, key, expectResult) {
 
 /**
  * @param {number[]} key
- * @param {Record<string, { false?: SimpleResult[], true?: SimpleResult[] }>} expectResults
+ * @param {string} state
+ * @param {{ false?: SimpleResult[], true?: SimpleResult[] }} expectResults
  */
-function matrixTest(key, expectResults) {
-	for (const [state, expectResult] of Object.entries(expectResults)) {
+function matrixTest2(key, state, expectResults) {
+	return () => {
 		assert.strictEqual(state.length, 4);
 		assert('UTF'.includes(state[0]));
 		assert('MUTF'.includes(state[1]));
@@ -128,7 +126,7 @@ function matrixTest(key, expectResults) {
 			ranges.push([[2], map[state[3]]]);
 		}
 
-		const normalizedExpectResult = Object.fromEntries(Object.entries(expectResult).map(
+		const normalizedExpectResult = Object.fromEntries(Object.entries(expectResults).map(
 			([key, value]) => {
 				const offsetRange = Math.floor(value.length / 2);
 
@@ -136,8 +134,18 @@ function matrixTest(key, expectResults) {
 			}
 		));
 
+		genericTest(ranges, key, normalizedExpectResult);
+	};
+}
+
+/**
+ * @param {number[]} key
+ * @param {Record<string, { false?: SimpleResult[], true?: SimpleResult[] }>} expectResults
+ */
+function matrixTest(key, expectResults) {
+	for (const [state, expectResult] of Object.entries(expectResults)) {
 		suite(state, () => {
-			genericTest(ranges, key, normalizedExpectResult);
+			matrixTest2(key, state, expectResult)();
 		});
 	}
 }
@@ -145,15 +153,15 @@ function matrixTest(key, expectResults) {
 suite('matrix:', () => {
 	const na = {
 		false: [
-			undefined,
-			undefined,
-			undefined,
+			-1,
+			-1,
+			-1,
 			{ key: [], inclusive: false, offset: 1 },
 			{ key: [], inclusive: false, offset: 2 }
 		],
 		true: [
-			undefined,
-			undefined,
+			-1,
+			-1,
 			{ key: [], inclusive: true, offset: 0 },
 			{ key: [], inclusive: true, offset: 1 },
 			{ key: [], inclusive: true, offset: 2 }
@@ -167,32 +175,32 @@ suite('matrix:', () => {
 			UUMM: na,
 			FUMM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TUMM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -200,32 +208,32 @@ suite('matrix:', () => {
 			UMUM: na,
 			FMUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TMUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -233,32 +241,32 @@ suite('matrix:', () => {
 			UUUM: na,
 			FUUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TUUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -266,32 +274,32 @@ suite('matrix:', () => {
 			UFUM: na,
 			FFUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TFUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -299,65 +307,65 @@ suite('matrix:', () => {
 			UTUM: na,
 			FTUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				]
 			},
 			TTUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
-					[0]
+					-1,
+					-1,
+					-1,
+					0,
+					1
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
-					[0],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				]
 			},
 			UMMU: na,
 			FMMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TMMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -365,32 +373,32 @@ suite('matrix:', () => {
 			UUMU: na,
 			FUMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TUMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -398,32 +406,32 @@ suite('matrix:', () => {
 			UFMU: na,
 			FFMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TFMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -431,65 +439,65 @@ suite('matrix:', () => {
 			UTMU: na,
 			FTMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				]
 			},
 			TTMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
-					[0]
+					-1,
+					-1,
+					-1,
+					0,
+					1
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
-					[0],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				]
 			},
 			UMUU: na,
 			FMUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TMUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -497,32 +505,32 @@ suite('matrix:', () => {
 			UUUU: na,
 			FUUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TUUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -530,32 +538,32 @@ suite('matrix:', () => {
 			UFUU: na,
 			FFUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TFUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -563,65 +571,65 @@ suite('matrix:', () => {
 			UTUU: na,
 			FTUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				]
 			},
 			TTUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
-					[0]
+					-1,
+					-1,
+					-1,
+					0,
+					1
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
-					[0],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				]
 			},
 			UMFU: na,
 			FMFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			TMFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -629,32 +637,32 @@ suite('matrix:', () => {
 			UUFU: na,
 			FUFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TUFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -662,32 +670,32 @@ suite('matrix:', () => {
 			UFFU: na,
 			FFFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			TFFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -695,98 +703,98 @@ suite('matrix:', () => {
 			UTFU: na,
 			FTFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
 			TTFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
-					[0]
+					-1,
+					-1,
+					-1,
+					0,
+					1
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
-					[0],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				]
 			},
 			UMTU: na,
 			FMTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
 			TMTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
-					[1]
+					-1,
+					-1,
+					-1,
+					0,
+					1
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
-					[1],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
 			UUTU: na,
 			FUTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TUTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -794,67 +802,67 @@ suite('matrix:', () => {
 			UFTU: na,
 			FFTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					-1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					-1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
 			TFTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
-					[1]
+					-1,
+					-1,
+					-1,
+					0,
+					2
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
-					[1],
+					-1,
+					-1,
+					0,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
 			UTTU: na,
 			FTTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
-					[1]
+					-1,
+					-1,
+					-1,
+					1,
+					2
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
-					[1]
+					-1,
+					-1,
+					-1,
+					1,
+					2
 				]
 			},
 			TTTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[],
-					[0]
+					-1,
+					-1,
+					-1,
+					0,
+					1
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
-					[0],
-					[1]
+					-1,
+					-1,
+					0,
+					1,
+					2
 				]
 			}
 		}
@@ -886,9 +894,9 @@ suite('matrix:0', () => {
 			UUMM: na,
 			FUMM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -896,9 +904,9 @@ suite('matrix:0', () => {
 			},
 			TUMM: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -907,32 +915,32 @@ suite('matrix:0', () => {
 			UMUM: na,
 			FMUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TMUM: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -940,9 +948,9 @@ suite('matrix:0', () => {
 			UUUM: na,
 			FUUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -950,9 +958,9 @@ suite('matrix:0', () => {
 			},
 			TUUM: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -970,32 +978,32 @@ suite('matrix:0', () => {
 			},
 			FFUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TFUM: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -1005,45 +1013,45 @@ suite('matrix:0', () => {
 					{ key: [0], inclusive: false, offset: -2 },
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			FTUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TTUM: {
 				false: [
-					undefined,
-					undefined,
-					[],
-					[0],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
@@ -1051,32 +1059,32 @@ suite('matrix:0', () => {
 			UMMU: na,
 			FMMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TMMU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -1084,9 +1092,9 @@ suite('matrix:0', () => {
 			UUMU: na,
 			FUMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1094,9 +1102,9 @@ suite('matrix:0', () => {
 			},
 			TUMU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1114,32 +1122,32 @@ suite('matrix:0', () => {
 			},
 			FFMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TFMU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -1149,45 +1157,45 @@ suite('matrix:0', () => {
 					{ key: [0], inclusive: false, offset: -2 },
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			FTMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TTMU: {
 				false: [
-					undefined,
-					undefined,
-					[],
-					[0],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
@@ -1195,32 +1203,32 @@ suite('matrix:0', () => {
 			UMUU: na,
 			FMUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TMUU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -1228,9 +1236,9 @@ suite('matrix:0', () => {
 			UUUU: na,
 			FUUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1238,9 +1246,9 @@ suite('matrix:0', () => {
 			},
 			TUUU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1258,32 +1266,32 @@ suite('matrix:0', () => {
 			},
 			FFUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TFUU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -1293,45 +1301,45 @@ suite('matrix:0', () => {
 					{ key: [0], inclusive: false, offset: -2 },
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			FTUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TTUU: {
 				false: [
-					undefined,
-					undefined,
-					[],
-					[0],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
@@ -1339,32 +1347,32 @@ suite('matrix:0', () => {
 			UMFU: na,
 			FMFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			TMFU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -1372,9 +1380,9 @@ suite('matrix:0', () => {
 			UUFU: na,
 			FUFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1382,9 +1390,9 @@ suite('matrix:0', () => {
 			},
 			TUFU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1402,32 +1410,32 @@ suite('matrix:0', () => {
 			},
 			FFFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			TFFU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -1437,45 +1445,45 @@ suite('matrix:0', () => {
 					{ key: [0], inclusive: false, offset: -2 },
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			FTFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TTFU: {
 				false: [
-					undefined,
-					undefined,
-					[],
-					[0],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
@@ -1483,42 +1491,42 @@ suite('matrix:0', () => {
 			UMTU: na,
 			FMTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
 			TMTU: {
 				false: [
-					undefined,
-					undefined,
-					[],
-					[1],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
-					[1],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
 			UUTU: na,
 			FUTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1526,9 +1534,9 @@ suite('matrix:0', () => {
 			},
 			TUTU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1539,40 +1547,40 @@ suite('matrix:0', () => {
 					{ key: [0], inclusive: false, offset: -2 },
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: na.true
 			},
 			FFTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					-1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					-1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
 			TFTU: {
 				false: [
-					undefined,
-					undefined,
-					[],
-					[1],
+					-1,
+					-1,
+					0,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
-					[1],
+					-1,
+					-1,
+					0,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
@@ -1581,46 +1589,46 @@ suite('matrix:0', () => {
 					{ key: [0], inclusive: false, offset: -2 },
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
-					[1]
+					1,
+					2
 				],
 				true: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
-					[1],
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
 			FTTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[0],
-					[1]
+					-1,
+					-1,
+					-1,
+					1,
+					2
 				],
 				true: [
-					undefined,
-					undefined,
-					[0],
-					[1],
+					-1,
+					-1,
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			},
 			TTTU: {
 				false: [
-					undefined,
-					undefined,
-					[],
-					[0],
-					[1]
+					-1,
+					-1,
+					0,
+					1,
+					2
 				],
 				true: [
-					undefined,
-					[],
-					[0],
-					[1],
+					-1,
+					0,
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				]
 			}
@@ -1656,9 +1664,9 @@ suite('matrix:1', () => {
 			UMUM: na,
 			FMUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1666,9 +1674,9 @@ suite('matrix:1', () => {
 			},
 			TMUM: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1689,9 +1697,9 @@ suite('matrix:1', () => {
 			},
 			FFUM: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -1699,9 +1707,9 @@ suite('matrix:1', () => {
 			},
 			TFUM: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1711,7 +1719,7 @@ suite('matrix:1', () => {
 				false: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -1719,9 +1727,9 @@ suite('matrix:1', () => {
 			},
 			FTUM: {
 				false: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -1729,9 +1737,9 @@ suite('matrix:1', () => {
 			},
 			TTUM: {
 				false: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -1740,32 +1748,32 @@ suite('matrix:1', () => {
 			UMMU: na,
 			FMMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
 			},
 			TMMU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -1776,32 +1784,32 @@ suite('matrix:1', () => {
 			UFMU: na,
 			FFMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TFMU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -1810,46 +1818,46 @@ suite('matrix:1', () => {
 				false: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			FTMU: {
 				false: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TTMU: {
 				false: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
@@ -1857,9 +1865,9 @@ suite('matrix:1', () => {
 			UMUU: na,
 			FMUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1867,9 +1875,9 @@ suite('matrix:1', () => {
 			},
 			TMUU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1890,9 +1898,9 @@ suite('matrix:1', () => {
 			},
 			FFUU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -1900,9 +1908,9 @@ suite('matrix:1', () => {
 			},
 			TFUU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -1912,7 +1920,7 @@ suite('matrix:1', () => {
 				false: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -1920,9 +1928,9 @@ suite('matrix:1', () => {
 			},
 			FTUU: {
 				false: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -1930,9 +1938,9 @@ suite('matrix:1', () => {
 			},
 			TTUU: {
 				false: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -1950,32 +1958,32 @@ suite('matrix:1', () => {
 			},
 			FMFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			TMFU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -2028,32 +2036,32 @@ suite('matrix:1', () => {
 			},
 			FFFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			TFFU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				]
@@ -2062,46 +2070,46 @@ suite('matrix:1', () => {
 				false: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			FTFU: {
 				false: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
 			},
 			TTFU: {
 				false: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
 				true: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				]
@@ -2111,45 +2119,45 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: false, offset: -2 },
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			FMTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					-1,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			TMTU: {
 				false: [
-					undefined,
-					undefined,
-					[],
-					[1],
+					-1,
+					-1,
+					0,
+					1,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					[],
-					[1],
+					-1,
+					0,
+					1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
@@ -2159,13 +2167,13 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: false, offset: -2 },
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
@@ -2175,13 +2183,13 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: false, offset: -2 },
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
@@ -2191,13 +2199,13 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: false, offset: -2 },
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
@@ -2207,45 +2215,45 @@ suite('matrix:1', () => {
 					{ key: [1], inclusive: false, offset: -2 },
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			FFTU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					-1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			TFTU: {
 				false: [
-					undefined,
-					undefined,
-					[],
-					[1],
+					-1,
+					-1,
+					0,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					[],
-					[1],
+					-1,
+					0,
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
@@ -2254,46 +2262,46 @@ suite('matrix:1', () => {
 				false: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
-					[1],
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
-					[1],
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			FTTU: {
 				false: [
-					undefined,
-					undefined,
-					[0],
-					[1],
+					-1,
+					-1,
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					undefined,
-					[0],
-					[1],
+					-1,
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
 			},
 			TTTU: {
 				false: [
-					undefined,
-					[],
-					[0],
-					[1],
+					-1,
+					0,
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 }
 				],
 				true: [
-					[],
-					[0],
-					[1],
+					0,
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				]
@@ -2342,9 +2350,9 @@ suite('matrix:2', () => {
 			UMMU: na,
 			FMMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -2352,9 +2360,9 @@ suite('matrix:2', () => {
 			},
 			TMMU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -2375,9 +2383,9 @@ suite('matrix:2', () => {
 			},
 			FFMU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -2385,9 +2393,9 @@ suite('matrix:2', () => {
 			},
 			TFMU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -2397,7 +2405,7 @@ suite('matrix:2', () => {
 				false: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -2405,9 +2413,9 @@ suite('matrix:2', () => {
 			},
 			FTMU: {
 				false: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -2415,9 +2423,9 @@ suite('matrix:2', () => {
 			},
 			TTMU: {
 				false: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -2447,9 +2455,9 @@ suite('matrix:2', () => {
 			},
 			FMFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2457,9 +2465,9 @@ suite('matrix:2', () => {
 			},
 			TMFU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -2507,9 +2515,9 @@ suite('matrix:2', () => {
 			},
 			FFFU: {
 				false: [
-					undefined,
-					undefined,
-					undefined,
+					-1,
+					-1,
+					-1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2517,9 +2525,9 @@ suite('matrix:2', () => {
 			},
 			TFFU: {
 				false: [
-					undefined,
-					undefined,
-					[],
+					-1,
+					-1,
+					0,
 					{ key: [], inclusive: true, offset: 1 },
 					{ key: [], inclusive: true, offset: 2 }
 				],
@@ -2529,7 +2537,7 @@ suite('matrix:2', () => {
 				false: [
 					{ key: [0], inclusive: false, offset: -1 },
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -2537,9 +2545,9 @@ suite('matrix:2', () => {
 			},
 			FTFU: {
 				false: [
-					undefined,
-					undefined,
-					[0],
+					-1,
+					-1,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -2547,9 +2555,9 @@ suite('matrix:2', () => {
 			},
 			TTFU: {
 				false: [
-					undefined,
-					[],
-					[0],
+					-1,
+					0,
+					1,
 					{ key: [0], inclusive: true, offset: 1 },
 					{ key: [0], inclusive: true, offset: 2 }
 				],
@@ -2559,7 +2567,7 @@ suite('matrix:2', () => {
 				false: [
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2567,9 +2575,9 @@ suite('matrix:2', () => {
 			},
 			FMTU: {
 				false: [
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2577,9 +2585,9 @@ suite('matrix:2', () => {
 			},
 			TMTU: {
 				false: [
-					undefined,
-					[],
-					[1],
+					-1,
+					0,
+					1,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2589,7 +2597,7 @@ suite('matrix:2', () => {
 				false: [
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2599,7 +2607,7 @@ suite('matrix:2', () => {
 				false: [
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2609,7 +2617,7 @@ suite('matrix:2', () => {
 				false: [
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2619,7 +2627,7 @@ suite('matrix:2', () => {
 				false: [
 					{ key: [1], inclusive: false, offset: -1 },
 					{ key: [1], inclusive: false, offset: 0 },
-					[1],
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2627,9 +2635,9 @@ suite('matrix:2', () => {
 			},
 			FFTU: {
 				false: [
-					undefined,
-					undefined,
-					[1],
+					-1,
+					-1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2637,9 +2645,9 @@ suite('matrix:2', () => {
 			},
 			TFTU: {
 				false: [
-					undefined,
-					[],
-					[1],
+					-1,
+					0,
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2648,8 +2656,8 @@ suite('matrix:2', () => {
 			UTTU: {
 				false: [
 					{ key: [0], inclusive: false, offset: 0 },
-					[0],
-					[1],
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2657,9 +2665,9 @@ suite('matrix:2', () => {
 			},
 			FTTU: {
 				false: [
-					undefined,
-					[0],
-					[1],
+					-1,
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
@@ -2667,9 +2675,9 @@ suite('matrix:2', () => {
 			},
 			TTTU: {
 				false: [
-					[],
-					[0],
-					[1],
+					0,
+					1,
+					2,
 					{ key: [1], inclusive: true, offset: 1 },
 					{ key: [1], inclusive: true, offset: 2 }
 				],
