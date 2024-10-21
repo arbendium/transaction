@@ -285,8 +285,8 @@ suite('matrix:', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UTUM', matrixTest2([], 'UTUM', na));
@@ -417,8 +417,8 @@ suite('matrix:', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UTMU', matrixTest2([], 'UTMU', na));
@@ -549,8 +549,8 @@ suite('matrix:', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UTUU', matrixTest2([], 'UTUU', na));
@@ -615,8 +615,8 @@ suite('matrix:', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UUFU', matrixTest2([], 'UUFU', na));
@@ -681,8 +681,8 @@ suite('matrix:', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UTFU', matrixTest2([], 'UTFU', na));
@@ -715,7 +715,7 @@ suite('matrix:', () => {
 			-1,
 			0,
 			1,
-			{ key: [0], inclusive: true, offset: 1 }
+			{ key: [1], inclusive: true, offset: 1 }
 		]
 	}));
 	suite('UMTU', matrixTest2([], 'UMTU', na));
@@ -977,15 +977,15 @@ suite('matrix:0', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		],
 		true: [
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UTUM', matrixTest2([0], 'UTUM', {
@@ -1121,15 +1121,15 @@ suite('matrix:0', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		],
 		true: [
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UTMU', matrixTest2([0], 'UTMU', {
@@ -1265,15 +1265,15 @@ suite('matrix:0', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		],
 		true: [
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UTUU', matrixTest2([0], 'UTUU', {
@@ -1346,15 +1346,15 @@ suite('matrix:0', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: [
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UUFU', matrixTest2([0], 'UUFU', na));
@@ -1383,8 +1383,8 @@ suite('matrix:0', () => {
 			{ key: [0], inclusive: false, offset: -2 },
 			{ key: [0], inclusive: false, offset: -1 },
 			{ key: [0], inclusive: false, offset: 0 },
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
@@ -1409,15 +1409,15 @@ suite('matrix:0', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: [
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UTFU', matrixTest2([0], 'UTFU', {
@@ -1426,14 +1426,14 @@ suite('matrix:0', () => {
 			{ key: [0], inclusive: false, offset: -1 },
 			{ key: [0], inclusive: false, offset: 0 },
 			1,
-			{ key: [0], inclusive: true, offset: 1 }
+			{ key: [1], inclusive: true, offset: 1 }
 		],
 		true: [
 			{ key: [0], inclusive: false, offset: -1 },
 			{ key: [0], inclusive: false, offset: 0 },
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('FTFU', matrixTest2([0], 'FTFU', {
@@ -1448,8 +1448,8 @@ suite('matrix:0', () => {
 			-1,
 			-1,
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('TTFU', matrixTest2([0], 'TTFU', {
@@ -1458,14 +1458,14 @@ suite('matrix:0', () => {
 			-1,
 			0,
 			1,
-			{ key: [0], inclusive: true, offset: 1 }
+			{ key: [1], inclusive: true, offset: 1 }
 		],
 		true: [
 			-1,
 			0,
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UMTU', matrixTest2([0], 'UMTU', na));
@@ -1662,9 +1662,9 @@ suite('matrix:1', () => {
 	suite('TUUM', matrixTest2([1], 'TUUM', na));
 	suite('UFUM', matrixTest2([1], 'UFUM', {
 		false: [
-			{ key: [1], inclusive: false, offset: -2 },
-			{ key: [1], inclusive: false, offset: -1 },
-			{ key: [1], inclusive: false, offset: 0 },
+			{ key: [0], inclusive: false, offset: -2 },
+			{ key: [0], inclusive: false, offset: -1 },
+			{ key: [0], inclusive: false, offset: 0 },
 			{ key: [0], inclusive: true, offset: 1 },
 			{ key: [0], inclusive: true, offset: 2 }
 		],
@@ -1685,8 +1685,8 @@ suite('matrix:1', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
@@ -1778,15 +1778,15 @@ suite('matrix:1', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		],
 		true: [
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UTMU', matrixTest2([1], 'UTMU', {
@@ -1863,9 +1863,9 @@ suite('matrix:1', () => {
 	suite('TUUU', matrixTest2([1], 'TUUU', na));
 	suite('UFUU', matrixTest2([1], 'UFUU', {
 		false: [
-			{ key: [1], inclusive: false, offset: -2 },
-			{ key: [1], inclusive: false, offset: -1 },
-			{ key: [1], inclusive: false, offset: 0 },
+			{ key: [0], inclusive: false, offset: -2 },
+			{ key: [0], inclusive: false, offset: -1 },
+			{ key: [0], inclusive: false, offset: 0 },
 			{ key: [0], inclusive: true, offset: 1 },
 			{ key: [0], inclusive: true, offset: 2 }
 		],
@@ -1886,8 +1886,8 @@ suite('matrix:1', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
@@ -1952,15 +1952,15 @@ suite('matrix:1', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: [
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UUFU', matrixTest2([1], 'UUFU', {
@@ -2001,11 +2001,11 @@ suite('matrix:1', () => {
 	}));
 	suite('UFFU', matrixTest2([1], 'UFFU', {
 		false: [
-			{ key: [1], inclusive: false, offset: -2 },
-			{ key: [1], inclusive: false, offset: -1 },
-			{ key: [1], inclusive: false, offset: 0 },
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: false, offset: -2 },
+			{ key: [0], inclusive: false, offset: -1 },
+			{ key: [0], inclusive: false, offset: 0 },
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
@@ -2030,15 +2030,15 @@ suite('matrix:1', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: [
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UTFU', matrixTest2([1], 'UTFU', {
@@ -2046,15 +2046,15 @@ suite('matrix:1', () => {
 			{ key: [0], inclusive: false, offset: -1 },
 			{ key: [0], inclusive: false, offset: 0 },
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: [
 			{ key: [0], inclusive: false, offset: -1 },
 			{ key: [0], inclusive: false, offset: 0 },
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('FTFU', matrixTest2([1], 'FTFU', {
@@ -2062,15 +2062,15 @@ suite('matrix:1', () => {
 			-1,
 			-1,
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: [
 			-1,
 			-1,
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('TTFU', matrixTest2([1], 'TTFU', {
@@ -2078,15 +2078,15 @@ suite('matrix:1', () => {
 			-1,
 			0,
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: [
 			-1,
 			0,
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		]
 	}));
 	suite('UMTU', matrixTest2([1], 'UMTU', {
@@ -2187,15 +2187,15 @@ suite('matrix:1', () => {
 	}));
 	suite('UFTU', matrixTest2([1], 'UFTU', {
 		false: [
-			{ key: [1], inclusive: false, offset: -2 },
-			{ key: [1], inclusive: false, offset: -1 },
-			{ key: [1], inclusive: false, offset: 0 },
+			{ key: [0], inclusive: false, offset: -2 },
+			{ key: [0], inclusive: false, offset: -1 },
+			{ key: [0], inclusive: false, offset: 0 },
 			2,
 			{ key: [1], inclusive: true, offset: 1 }
 		],
 		true: [
-			{ key: [1], inclusive: false, offset: -1 },
-			{ key: [1], inclusive: false, offset: 0 },
+			{ key: [0], inclusive: false, offset: -1 },
+			{ key: [0], inclusive: false, offset: 0 },
 			2,
 			{ key: [1], inclusive: true, offset: 1 },
 			{ key: [1], inclusive: true, offset: 2 }
@@ -2343,9 +2343,9 @@ suite('matrix:2', () => {
 	suite('TUMU', matrixTest2([2], 'TUMU', na));
 	suite('UFMU', matrixTest2([2], 'UFMU', {
 		false: [
-			{ key: [2], inclusive: false, offset: -2 },
-			{ key: [2], inclusive: false, offset: -1 },
-			{ key: [2], inclusive: false, offset: 0 },
+			{ key: [0], inclusive: false, offset: -2 },
+			{ key: [0], inclusive: false, offset: -1 },
+			{ key: [0], inclusive: false, offset: 0 },
 			{ key: [0], inclusive: true, offset: 1 },
 			{ key: [0], inclusive: true, offset: 2 }
 		],
@@ -2366,8 +2366,8 @@ suite('matrix:2', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: true, offset: 1 },
+			{ key: [0], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
@@ -2415,9 +2415,9 @@ suite('matrix:2', () => {
 	suite('TTUU', matrixTest2([2], 'TTUU', na));
 	suite('UMFU', matrixTest2([2], 'UMFU', {
 		false: [
-			{ key: [2], inclusive: false, offset: -2 },
-			{ key: [2], inclusive: false, offset: -1 },
-			{ key: [2], inclusive: false, offset: 0 },
+			{ key: [1], inclusive: false, offset: -2 },
+			{ key: [1], inclusive: false, offset: -1 },
+			{ key: [1], inclusive: false, offset: 0 },
 			{ key: [1], inclusive: true, offset: 1 },
 			{ key: [1], inclusive: true, offset: 2 }
 		],
@@ -2438,16 +2438,16 @@ suite('matrix:2', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
 	suite('UUFU', matrixTest2([2], 'UUFU', {
 		false: [
-			{ key: [2], inclusive: false, offset: -2 },
-			{ key: [2], inclusive: false, offset: -1 },
-			{ key: [2], inclusive: false, offset: 0 },
+			{ key: [1], inclusive: false, offset: -2 },
+			{ key: [1], inclusive: false, offset: -1 },
+			{ key: [1], inclusive: false, offset: 0 },
 			{ key: [1], inclusive: true, offset: 1 },
 			{ key: [1], inclusive: true, offset: 2 }
 		],
@@ -2455,9 +2455,9 @@ suite('matrix:2', () => {
 	}));
 	suite('FUFU', matrixTest2([2], 'FUFU', {
 		false: [
-			{ key: [2], inclusive: false, offset: -2 },
-			{ key: [2], inclusive: false, offset: -1 },
-			{ key: [2], inclusive: false, offset: 0 },
+			{ key: [1], inclusive: false, offset: -2 },
+			{ key: [1], inclusive: false, offset: -1 },
+			{ key: [1], inclusive: false, offset: 0 },
 			{ key: [1], inclusive: true, offset: 1 },
 			{ key: [1], inclusive: true, offset: 2 }
 		],
@@ -2465,9 +2465,9 @@ suite('matrix:2', () => {
 	}));
 	suite('TUFU', matrixTest2([2], 'TUFU', {
 		false: [
-			{ key: [2], inclusive: false, offset: -2 },
-			{ key: [2], inclusive: false, offset: -1 },
-			{ key: [2], inclusive: false, offset: 0 },
+			{ key: [1], inclusive: false, offset: -2 },
+			{ key: [1], inclusive: false, offset: -1 },
+			{ key: [1], inclusive: false, offset: 0 },
 			{ key: [1], inclusive: true, offset: 1 },
 			{ key: [1], inclusive: true, offset: 2 }
 		],
@@ -2475,11 +2475,11 @@ suite('matrix:2', () => {
 	}));
 	suite('UFFU', matrixTest2([2], 'UFFU', {
 		false: [
-			{ key: [2], inclusive: false, offset: -2 },
-			{ key: [2], inclusive: false, offset: -1 },
-			{ key: [2], inclusive: false, offset: 0 },
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [0], inclusive: false, offset: -2 },
+			{ key: [0], inclusive: false, offset: -1 },
+			{ key: [0], inclusive: false, offset: 0 },
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
@@ -2498,8 +2498,8 @@ suite('matrix:2', () => {
 			-1,
 			-1,
 			0,
-			{ key: [], inclusive: true, offset: 1 },
-			{ key: [], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
@@ -2508,8 +2508,8 @@ suite('matrix:2', () => {
 			{ key: [0], inclusive: false, offset: -1 },
 			{ key: [0], inclusive: false, offset: 0 },
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
@@ -2518,8 +2518,8 @@ suite('matrix:2', () => {
 			-1,
 			-1,
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
@@ -2528,8 +2528,8 @@ suite('matrix:2', () => {
 			-1,
 			0,
 			1,
-			{ key: [0], inclusive: true, offset: 1 },
-			{ key: [0], inclusive: true, offset: 2 }
+			{ key: [1], inclusive: true, offset: 1 },
+			{ key: [1], inclusive: true, offset: 2 }
 		],
 		true: na.true
 	}));
@@ -2595,8 +2595,8 @@ suite('matrix:2', () => {
 	}));
 	suite('UFTU', matrixTest2([2], 'UFTU', {
 		false: [
-			{ key: [1], inclusive: false, offset: -1 },
-			{ key: [1], inclusive: false, offset: 0 },
+			{ key: [0], inclusive: false, offset: -1 },
+			{ key: [0], inclusive: false, offset: 0 },
 			2,
 			{ key: [1], inclusive: true, offset: 1 },
 			{ key: [1], inclusive: true, offset: 2 }
