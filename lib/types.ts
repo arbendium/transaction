@@ -1,6 +1,6 @@
 export type MutationOperator = 'set'
 export type Mutation = [MutationOperator, Buffer] | 'clear'
-export type KeySelector = { key: Buffer, inclusive: boolean, offset: number }
+export type KeySelector<T = Buffer> = { key: T, inclusive: boolean, offset: number }
 export type RangeIndexEntry = {
 	mutations: Mutation[] | undefined
 	promise: Promise<Buffer | undefined> | undefined

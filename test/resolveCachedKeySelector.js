@@ -8,9 +8,8 @@ import { emptyBuffer } from '../lib/util.js';
 
 /**
  * @typedef {(
- *   | { key: number[], inclusive: boolean, offset: number }
+ *   | import('../lib/types.js').KeySelector<number | number[]>
  *   | number
- *   | undefined
  * )} SimpleResult
  */
 
@@ -81,11 +80,20 @@ function genericTest(state, key, expectResult) {
 						index
 					);
 
+					if (typeof result === 'object' && typeof result.key === 'number') {
+						// eslint-disable-next-line prefer-destructuring
+						result.key = index.ranges[result.key][0];
+					}
+
 					assert.deepStrictEqual(
 						result,
-						typeof value === 'number' || value == null
+						typeof value === 'number'
 							? value
-							: { key: Buffer.from(value.key), inclusive: value.inclusive, offset: value.offset }
+							: {
+								key: typeof value.key === 'number' ? value.key : Buffer.from(value.key),
+								inclusive: value.inclusive,
+								offset: value.offset
+							}
 					);
 				});
 			}
