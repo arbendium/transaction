@@ -1,4 +1,4 @@
-\export type MutationOperator = 'set'
+export type MutationOperator = 'set'
 export type Mutation = [MutationOperator, Buffer] | 'clear'
 export type KeySelector = { key: Buffer, inclusive: boolean, offset: number }
 export type RangeIndexEntry = {
