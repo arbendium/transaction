@@ -13,12 +13,10 @@
     "lint": "eslint lib test eslint.config.js",
     "test": "node --test"
   },
-  "dependencies": {
-    "@arbendium/tree": "github:arbendium/tree"
-  },
   "devDependencies": {
     "@arbendium/eslint-config-base": "^2.1.0",
-    "@types/node": "^22.15.17",
+    "@arbendium/foundationdb": "file:../node-foundationdb/arbendium-foundationdb-0.1.0.tgz",
+    "@types/node": "^22.15.18",
     "eslint": "^9.26.0"
   }
 }
