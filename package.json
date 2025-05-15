@@ -17,8 +17,8 @@
     "@arbendium/tree": "github:arbendium/tree"
   },
   "devDependencies": {
-    "@arbendium/eslint-config-base": "^1.0.0",
-    "@types/node": "^20.16.9",
-    "eslint": "^8.57.1"
+    "@arbendium/eslint-config-base": "^2.1.0",
+    "@types/node": "^22.15.17",
+    "eslint": "^9.26.0"
   }
 }
