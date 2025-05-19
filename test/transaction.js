@@ -2,7 +2,6 @@
 
 import assert from 'node:assert';
 import { test } from 'node:test';
-import GenericBackend from '../lib/backend.js';
 import Transaction from '../lib/transaction.js';
 
 const defaultState = {
@@ -19,17 +18,14 @@ const defaultState = {
  * )} Operation
  */
 
-class Backend extends GenericBackend {
+class Backend {
 	/** @param {Operation[]} operations */
 	constructor(operations) {
-		super();
-
 		/** @type {Operation[]} */
 		this.operations = operations;
 	}
 
 	/**
-	 * @override
 	 * @param {Buffer} key
 	 * @returns {Promise<Buffer | undefined>}
 	 */
